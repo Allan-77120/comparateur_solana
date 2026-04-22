@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-export default function Header({ activeFilter, setActiveFilter }) {
+export default function Header({
+  activeFilter,
+  setActiveFilter,
+  search,
+  setSearch,
+}) {
   const filters = ["All", "Lending", "Other"];
 
   return (
@@ -62,10 +67,12 @@ export default function Header({ activeFilter, setActiveFilter }) {
             type="text"
             placeholder="Search protocol, stablecoin..."
             className="flex-1 bg-[#111115] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-green-400"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
 
           <button className="bg-[#111115] border border-white/10 px-4 py-3 rounded-xl text-white/70 hover:text-white transition">
-            Sort: Highest APY
+            Highest APY
           </button>
         </div>
 
