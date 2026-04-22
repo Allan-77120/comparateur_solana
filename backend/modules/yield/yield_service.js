@@ -23,9 +23,15 @@ exports.getYields = async () => {
     apy: e.apy,
     tvl: e.tvlUsd,
     type: stableTokens.includes(e.symbol) ? "safe" : "risky",
+    strategy:
+  e.exposure === "multi"
+    ? "LP"
+    : e.ilRisk === "no" && e.stablecoin
+    ? "Lending"
+    : "Other",
   }));
 
   const sorted = mapped.sort((a, b) => b.apy - a.apy);
-  const limited = sorted.slice(0, 50);
-  return limited;
+  // const limited = sorted.slice(0, 9);
+  return sorted;
 };
