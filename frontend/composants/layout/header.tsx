@@ -1,5 +1,10 @@
 "use client";
-
+type HeaderProps = {
+  activeFilter: string;
+  setActiveFilter: (value: string) => void;
+  search: string;
+  setSearch: (value: string) => void;
+};
 import Link from "next/link";
 import Image from "next/image";
 export default function Header({
@@ -7,7 +12,7 @@ export default function Header({
   setActiveFilter,
   search,
   setSearch,
-}) {
+}: HeaderProps) {
   const filters = ["All", "Lending", "Other"];
 
   return (

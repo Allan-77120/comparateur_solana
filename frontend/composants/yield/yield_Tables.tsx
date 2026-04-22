@@ -1,6 +1,19 @@
 "use client";
+type Yield = {
+  protocol: string;
+  token: string;
+  strategy: string;
+  apy: number;
+  tvl: number;
+  type: string;
+};
 
-export default function YieldTable({ data, activeFilter, search }) {
+type YieldTableProps = {
+  data: Yield[];
+  activeFilter: string;
+  search: string;
+};
+export default function YieldTable({ data, activeFilter, search }: YieldTableProps) {
 console.log("search:", search);
   const filteredData = data.filter((item) => {
   const matchesFilter =
