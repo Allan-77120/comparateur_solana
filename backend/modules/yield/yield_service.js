@@ -31,7 +31,5 @@ exports.getYields = async () => {
     : "Other",
   }));
 
-  const sorted = mapped.sort((a, b) => b.apy - a.apy);
-  // const limited = sorted.slice(0, 9);
-  return sorted;
+  return mapped;
 };
