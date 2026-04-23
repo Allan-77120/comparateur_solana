@@ -1,26 +1,20 @@
 "use client";
-type Yield = {
-  protocol: string;
-  token: string;
-  strategy: string;
-  apy: number;
-  tvl: number;
-  type: string;
-};
 
-type SortBy = "none" | "apy-desc";
-
-type ClientPageProps = {
-  data: Yield[];
-};
 import { useState } from "react";
 import Header from "@/composants/layout/header";
 import YieldTable from "@/composants/yield/yield_Tables";
+import type { SortBy, StrategyFilter } from "@/lib/types";
+import type { YieldPool } from "@/lib/yields";
+
+type ClientPageProps = {
+  data: YieldPool[];
+};
 
 export default function ClientPage({ data }: ClientPageProps) {
   const [sortBy, setSortBy] = useState<SortBy>("none");
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState<StrategyFilter>("All");
   const [search, setSearch] = useState("");
+
   return (
     <>
       <Header

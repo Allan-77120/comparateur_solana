@@ -1,14 +1,6 @@
 import Link from "next/link";
 import { getProtocolMetadata } from "@/lib/protocols";
-
-type Yield = {
-  protocol: string;
-  token: string;
-  strategy: string;
-  apy: number;
-  tvl: number;
-  type: string;
-};
+import { getYields, type YieldPool } from "@/lib/yields";
 
 type ProtocolSummary = {
   protocol: string;
@@ -32,8 +24,8 @@ function formatPercent(value: number) {
   return `${value.toFixed(2)}%`;
 }
 
-function buildProtocolSummaries(data: Yield[]): ProtocolSummary[] {
-  const summaries = new Map<string, Yield[]>();
+function buildProtocolSummaries(data: YieldPool[]): ProtocolSummary[] {
+  const summaries = new Map<string, YieldPool[]>();
 
   for (const item of data) {
     const protocolPools = summaries.get(item.protocol) ?? [];
@@ -64,15 +56,7 @@ function buildProtocolSummaries(data: Yield[]): ProtocolSummary[] {
 }
 
 export default async function ProtocolsPage() {
-  const res = await fetch("http://localhost:3000/yields", {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Unable to load protocols");
-  }
-
-  const data: Yield[] = await res.json();
+  const data = await getYields();
   const protocols = buildProtocolSummaries(data);
 
   return (
@@ -92,7 +76,8 @@ export default async function ProtocolsPage() {
           <h1 className="mt-3 text-4xl font-bold">Protocols</h1>
           <p className="mt-4 max-w-2xl text-white/55">
             Browse the Solana protocols currently available in the yield data,
-            then open a detail page to inspect pools, TVL, APY, and known risks.
+            compare their TVL and average APY, then open the official app when
+            you are ready to explore.
           </p>
         </div>
 

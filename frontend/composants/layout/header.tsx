@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import type { Dispatch, SetStateAction } from "react";
-
-type SortBy = "none" | "apy-desc";
+import { strategyFilters, type SortBy, type StrategyFilter } from "@/lib/types";
 
 type HeaderProps = {
-  activeFilter: string;
-  setActiveFilter: (value: string) => void;
+  activeFilter: StrategyFilter;
+  setActiveFilter: (value: StrategyFilter) => void;
   search: string;
   setSearch: (value: string) => void;
   sortBy: SortBy;
@@ -23,41 +22,41 @@ export default function Header({
   sortBy,
   setSortBy,
 }: HeaderProps) {
-  const filters = ["All", "Lending", "Other"];
   const isHighestApyActive = sortBy === "apy-desc";
 
   return (
     <div className="w-full">
-      {/* HEADER */}
-      <header className="fixed left-0 top-0 z-50 w-full backdrop-blur-xl bg-[#0B0B0D]/70 border-b border-white/5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-white/5 bg-[#0B0B0D]/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" aria-label="Go to homepage">
             <Image
               src="/solana.png"
               alt="Solana"
               width={70}
               height={70}
-              className="w-40 h-10 object-contain"
+              className="h-10 w-40 object-contain"
             />
           </Link>
         </div>
       </header>
 
-      {/* HERO + FILTERS */}
-      <section className="relative z-20 max-w-7xl mx-auto px-6 pt-32 pb-6">
+      <section className="relative z-20 mx-auto max-w-7xl px-6 pb-6 pt-32">
         <div className="mb-8">
-          <p className="text-green-400 text-xs mb-4">
-            ● SOLANA • STABLECOIN YIELDS
-          </p>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#14F195]/20 bg-[#14F195]/10 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-[#14F195]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#14F195] shadow-[0_0_12px_rgba(20,241,149,0.9)]" />
+            <span>Solana</span>
+            <span className="h-1 w-1 rounded-full bg-white/30" />
+            <span>Stablecoin yields</span>
+          </div>
 
-          <h1 className="text-5xl font-bold text-white leading-tight">
+          <h1 className="text-5xl font-bold leading-tight text-white">
             Find the best{" "}
             <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">
               Solana yield
             </span>
           </h1>
 
-          <p className="text-white/50 mt-4 max-w-xl">
+          <p className="mt-4 max-w-xl text-white/50">
             Compare DeFi strategies with a complete view of returns and risks.
           </p>
 
@@ -69,43 +68,59 @@ export default function Header({
           </Link>
         </div>
 
-        {/* SEARCH + SORT */}
-        <div className="flex gap-4 mb-6 relative z-30">
-          <input
-            type="text"
-            placeholder="Search protocol, stablecoin..."
-            className="flex-1 bg-[#111115] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-green-400"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+        <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-2 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl md:flex-row">
+          <label className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-white/10 bg-[#111115] px-4 py-3 transition focus-within:border-[#14F195]/50">
+            <svg
+              aria-hidden="true"
+              className="h-4 w-4 text-white/35"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="m21 21-4.3-4.3m2.3-5.2a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="2"
+              />
+            </svg>
+
+            <input
+              type="text"
+              placeholder="Search protocol or stablecoin"
+              className="min-w-0 flex-1 bg-transparent text-white placeholder:text-white/30 focus:outline-none"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </label>
 
           <button
             type="button"
             onClick={() =>
-              setSortBy(currentSort =>
-                currentSort === "apy-desc" ? "none" : "apy-desc",
+              setSortBy((currentSort) =>
+                currentSort === "apy-desc" ? "none" : "apy-desc"
               )
             }
-            className={`border px-4 py-3 rounded-xl transition overflow-hidden ${
+            className={`overflow-hidden rounded-xl border px-4 py-3 transition ${
               isHighestApyActive
-                ? "bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-origin-border text-black border-transparent"
-                : "bg-[#111115] border-white/10 text-white/70 hover:text-white"
-            }`}>
+                ? "border-[#14F195]/50 bg-white/5 text-white"
+                : "border-white/10 bg-white/5 text-white/80 hover:border-[#14F195]/50 hover:text-white"
+            }`}
+          >
             Highest APY
           </button>
         </div>
 
-        {/* FILTERS */}
         <div className="flex flex-wrap gap-3">
-          {filters.map(filter => (
+          {strategyFilters.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-2 rounded-full text-sm border transition ${
+              className={`rounded-full border px-4 py-2 text-sm transition ${
                 activeFilter === filter
-                  ? "bg-green-400 text-black border-green-600"
+                  ? "border-green-600 bg-green-400 text-black"
                   : "border-white/10 text-white/60 hover:text-white"
-              }`}>
+              }`}
+            >
               {filter}
             </button>
           ))}

@@ -1,11 +1,8 @@
 import ClientPage from "@/composants/ClientPage";
+import { getYields } from "@/lib/yields";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/yields", {
-    cache: "no-store",
-  });
-
-  const data = await res.json();
+  const data = await getYields();
 
   return <ClientPage data={data} />;
 }
