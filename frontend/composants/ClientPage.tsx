@@ -7,6 +7,9 @@ type Yield = {
   tvl: number;
   type: string;
 };
+
+type SortBy = "none" | "apy-desc";
+
 type ClientPageProps = {
   data: Yield[];
 };
@@ -15,6 +18,7 @@ import Header from "@/composants/layout/header";
 import YieldTable from "@/composants/yield/yield_Tables";
 
 export default function ClientPage({ data }: ClientPageProps) {
+  const [sortBy, setSortBy] = useState<SortBy>("none");
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
   return (
@@ -24,9 +28,16 @@ export default function ClientPage({ data }: ClientPageProps) {
         setActiveFilter={setActiveFilter}
         search={search}
         setSearch={setSearch}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
       />
 
-      <YieldTable data={data} activeFilter={activeFilter} search={search} />
+      <YieldTable
+        data={data}
+        activeFilter={activeFilter}
+        search={search}
+        sortBy={sortBy}
+      />
     </>
   );
 }
